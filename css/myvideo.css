@@ -1,0 +1,118 @@
+.top{
+    height: 10rem;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    background: white;
+}
+.userImg{
+   height: 4rem;
+   width: 100%;
+   text-align: center;
+    margin-top: 1rem;
+}
+.userImg img{
+    height: 4rem;
+    width: 4rem;
+    border-radius: 4rem;
+}
+.userName{
+    width: 100%;
+    height: 1.5rem;
+    line-height: 1.6rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #333
+  }   
+  .topBottom{
+      height: 2rem;
+      margin-top: 10px;
+  }
+  .topBottom .topBottomLeft{
+      width: 50%;
+      height: 2rem;
+      float: left;
+      position: relative
+  }
+  .topBottom .topBottomLeft:before{
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 1px ;
+      background: #eee;
+      right: 0
+  }
+  .topBottom .topBottomLeft div{
+      text-align: center;
+      height: 2rem;
+      height: 1rem;
+        font-size: .6rem;
+      line-height: 1rem
+  }
+   .topBottom .topBottomRight{
+      width: 50%;
+      height: 2rem;
+      float: left;
+
+  }
+   .topBottom .topBottomRight div{
+      text-align: center;
+      height: 2rem;
+      height: 1rem;
+      line-height: 1rem;
+      font-size: .6rem;
+  }
+
+  .qubi,.jifen{
+      color: #FF6380;
+  }
+  .mui-table-view-cell>a:not(.mui-btn).mui-active{
+      background: white
+  }
+  .mui-navigate-right{
+      font-size: .65rem;
+      color: #333
+  }
+
+  .mui-table-view-cell:after{
+      left:0;
+      color: #eee
+  }
+  
+
+.mypicture{
+	width: 100%;
+	height: auto;
+	background: white;
+	margin-top: 10px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+.mypicture:after{
+	content: "";
+	display: block;
+	clear: both;
+}
+.mypictureList{
+	width: 30%;
+	margin-left:2.5% ;
+	height: 5rem;
+	float: left;
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+.mypictureList img{
+	width: 100%;
+}
+
+.myvideo{
+	margin-top: 10px;
+}
+.myvideoList{
+	height: 6rem;;
+	width: 100%;
+	background: white;
+}
+a{
+	color: #333;
+}

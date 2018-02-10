@@ -1,0 +1,160 @@
+.font-big{
+	font-weight: 900;
+}
+.font-medium{
+	font-weight: 400;
+}
+
+.no-box-shadow{
+	box-shadow: none
+}
+.white-bg{
+	background-color: white;
+}
+.dark-big{
+	color: #333333;
+	font-size: 16px;
+}
+.dark-medium{
+	color: #333333;
+	font-size: .6rem;
+}
+.dark-small{
+	color: #333333;
+	font-size: 12px;
+}
+.dark-micro{
+	color: #333333;
+	font-size: 10px;
+}
+.gray-big{
+	color: #A2A2A2;
+	font-size: 16px;
+}
+.gray-medium{
+	color: #A2A2A2;
+	font-size: 14px;
+}
+.gray-small{
+	color: #A2A2A2;
+	font-size: 12px;
+}
+.gray-micro{
+	color: #A2A2A2;
+	font-size: 10px;
+}
+.orange-big{
+	color: #F79709;
+	font-size: 16px;
+}
+.orange-medium{
+	color: #F79709;
+	font-size: 14px;
+}
+.orange-small{
+	color: #F79709;
+	font-size: 12px;
+}
+.orange-micro{
+	color: #F79709;
+	font-size: 10px;
+}
+
+.pink-big{
+	color: #FF6380;
+	font-size: 16px;
+}
+.pink-medium{
+	color: #FF6380;
+	font-size: .6rem;
+}
+.pink-small{
+	color: #FF6380;
+	font-size: 12px;
+}
+.pink-micro{
+	color: #FF6380;
+	font-size: 10px;
+}
+
+.top{
+    height: 10rem;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    background: white;
+}
+.userImg{
+   height: 4rem;
+   width: 100%;
+   text-align: center;
+    margin-top: 1rem;
+}
+.userImg img{
+    height: 4rem;
+    width: 4rem;
+    border-radius: 4rem;
+}
+.userName{
+    width: 100%;
+    height: 1.5rem;
+    line-height: 1.6rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #333
+  }   
+  .topBottom{
+      height: 2rem;
+      margin-top: 10px;
+  }
+  .topBottom .topBottomLeft{
+      width: 50%;
+      height: 2rem;
+      float: left;
+      position: relative
+  }
+  .topBottom .topBottomLeft:before{
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 1px ;
+      background: #eee;
+      right: 0
+  }
+  .topBottom .topBottomLeft div{
+      text-align: center;
+      height: 2rem;
+      height: 1rem;
+        font-size: .6rem;
+      line-height: 1rem
+  }
+   .topBottom .topBottomRight{
+      width: 50%;
+      height: 2rem;
+      float: left;
+
+  }
+   .topBottom .topBottomRight div{
+      text-align: center;
+      height: 2rem;
+      height: 1rem;
+      line-height: 1rem;
+      font-size: .6rem;
+  }
+
+  .qubi,.jifen{
+      color: #FF6380;
+  }
+  .mui-table-view-cell>a:not(.mui-btn).mui-active{
+      background: white
+  }
+  .mui-navigate-right{
+      font-size: 13px;
+      font-weight: 500;
+      color: #333
+  }
+
+  .mui-table-view-cell:after{
+      left:0;
+      color: #eee
+  }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<style>
+			.login-btn{
+				font-size: 18px;
+   				 display: block;
+    				width: 100%;
+    				margin-bottom: 10px;
+    				padding: 10px 0;
+    				background-color: #FF6380;
+    				color: white;
+			}
+			.logininput{
+				 	height: 10px;
+    					padding: 10px 0px;
+    					font-size: 12px;
+			}
+			.link-area {
+				display: block;
+				margin-top: 25px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body class="white-bg">
+		<header class="mui-bar mui-bar-nav white-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #333;"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		
+		<div class="mui-content white-bg" style="padding-top: 80px;" id="register">
+			<form  class="mui-input-group" id="register_from" >
+				<div class="mui-input-row" style="height: 45px;">
+					<label>账号</label>
+					<input  name="name" type="text" class="mui-input-clear mui-input logininput" placeholder="请输入账号">
+				</div>
+				<div class="mui-input-row" style="height: 45px;">
+					<label>密码</label>
+					<input  name="password" type="password" class="mui-input-clear mui-input logininput" placeholder="请输入密码">
+				</div>
+				<div class="mui-input-row" style="height: 45px;">
+					<label>重复密码</label>
+					<input name='repassword' type="password" class="mui-input-clear mui-input logininput" placeholder="请输入密码">
+				</div>
+			</form>
+			
+			<div class="mui-content-padded">
+				<button id='login' class="mui-btn login-btn " @click="doregister()">注册</button>
+				<div class="link-area "><a id='reg' class="pink-big" @click="return_login()">已有账号，立即登录</a> 
+				</div>
+			</div>
+
+		</div>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/jquery-3.1.0.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		if(localStorage.getItem('username')){
+			mui.openWindow({
+				url:'../index.html' 
+			})
+		}
+		var dataplayer = new Vue({
+			el:'#register',
+			data:{
+				register:[]
+			},
+			methods:{
+				return_login:function(){
+					mui.openWindow({
+						url:'./login.html'
+					})
+				}, 
+				doregister:function(){
+					data = $("#register_from").serializeObject();
+					if(data['password']==data['repassword']){
+							mui.post('http://aiqinqu.cn/api/register',data,function(res){
+								data = JSON.parse(res)
+								if(data.status_code==200){ 
+									localStorage.setItem('username', data.data.name);
+									localStorage.setItem('avatar', data.data.avatar); 
+									localStorage.setItem('coin', data.data.coin);
+									localStorage.setItem('userid', data.data.id);
+									localStorage.setItem('active', data.data.active);
+									if (localStorage.getItem('username')) {
+										mui.openWindow({
+											url:'../index.html'
+										})
+									}
+								}else{
+									mui.toast(data.msg)
+								}
+							})
+					}else{
+						mui.toast('密码不一致,请验证密码')
+					} 
+				}
+			}
+		});
+			
+			
+			
+		</script>
+	</body>
+</html>

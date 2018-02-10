@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+</head>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+<meta content="telephone=no, address=no" name="format-detection">
+<!-- 忽略将数字变为电话号码 -->
+<link href="../css/mui.min.css" rel="stylesheet" />
+<link href="../css/common.css" rel="stylesheet" />
+<link href="../css/order.css" rel="stylesheet" />
+
+<body>
+
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">订单中心</h1>
+	</header>
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="padding-bottom: 50px;padding-top:60px;">
+		<div class="mui-scroll">
+			<!--数据列表-->
+			<ul class="mui-table-view mui-table-view-chevron" id="order">
+				  <div class="orderRect">	
+				     <div class="orderList" v-for='item in orderList'>
+				     	 <div class="orderListLeft">	
+				     	    <img :src="item.proimg" alt="" />
+				     	 </div>
+				     	 <div class="orderListRight">
+				     	 	 <div>商品名：<span v-text='item.proname'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥<span v-text='item.proprice'>988</span></div>
+				     	 	 <div>数量：<span v-text='item.procount'></span></div>
+				     	 	 <div>规格：<span v-text='item.prosku'></span></div>
+				     	 	 <div>状态：<span v-text='item.prowuliu'></span></div>
+				     	 </div>
+				     </div>
+				  </div>
+			</ul>
+		</div>
+	</div>
+
+</body>
+<script src="../js/jquery-3.1.0.min.js"></script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/vue.min.js"></script>
+<script src="../js/countUp.min.js"></script>
+<script src="../js/common.js"></script>
+<script type="text/javascript">
+	$(".close").on("tap",function(){
+		$(".rechargeZhezhao").hide()
+	})
+	mui.init({
+		pullRefresh: {
+			container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+			down: {
+				height: 50, //可选,默认50.触发下拉刷新拖动距离,
+				auto: true, //可选,默认false.自动下拉刷新一次
+				contentdown: "", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+				contentover: "", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+				contentrefresh: "", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+				callback: pullfresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			}
+		}
+	});
+
+	function pullfresh() {
+		mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+	}
+
+
+var body = new Vue({
+	el:"#order",
+	data:{
+		orderList:[
+			{
+				proimg:"http://static.koudaimiao.com/1506412006626.png",
+				proprice:"10",
+				proname:"玻尿酸",
+				procount:"1",
+				prosku:"均码",
+				prowuliu:"物流中"
+			},
+			{
+				proimg:"http://static.koudaimiao.com/1506412006626.png",
+				proprice:"10",
+				proname:"玻尿酸",
+				procount:"1",
+				prosku:"均码",
+				prowuliu:"物流中"
+			},
+		],
+	}
+})
+
+
+$("body").on("tap",".rechargeList",function(){
+	 var index = $(this).index();
+	 var price = $(this).attr("data-price");
+     body.price = price;
+     for(var i = 0 ; i < body.rechargeList.length ; i++){
+     	 if(index==i){
+     	 	body.rechargeList[i].status=1
+     	 }else{
+     	 	body.rechargeList[i].status=0
+     	 }
+     }
+})
+
+
+$("#sureButton").on("tap",function(){
+$(".rechargeZhezhao").show()	
+})
+</script>
+
+</html>

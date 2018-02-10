@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+		<meta content="telephone=no, address=no" name="format-detection">
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/common.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+	</head>
+	<style> 
+			html,
+			body {
+				background-color: white;
+			}
+			.item-img{
+				width: 100%;
+				height: 9rem;
+			}
+			.goods{
+				font-size: 20px;
+			}
+			.price{
+				text-align: center;
+				padding-top: 10px;"
+			}
+			.true_price{
+				text-align: center;
+				color: red;
+				font-size: 20px;
+			}
+			.price{
+				text-align: center;
+				color: #787d82;
+				font-size: 20px;
+			}
+			.nolisttype{
+				list-style-type:none;
+			}
+			.img_desc{
+				margin-top: 20px;
+			}
+			.img_desc img{
+				width: 100%;
+			}
+			.option{
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				padding-top: 10px;
+				height: 60px;
+				width: 100%;
+				z-index: 10;
+				background-color: white;
+			}
+			.buy{
+				width:45%;
+				margin-left: 2%;
+				height:40px;
+				bottom:0;
+				float: left;
+				background:white;
+				border:1px solid #FF6380;
+				border-radius:5px;
+				line-height: 40px; /*设置line-height与父级元素的height相等*/
+            		text-align: center; /*设置文本水平居中*/
+            		overflow: hidden; /*防止内容超出容器或者产生自动换行*/
+            		color: #FF6380;
+			} 
+			.shopcat{
+				margin-left: 6%;
+				margin-right: 2%;
+				width:45%;
+				height:40px;
+				bottom:0;
+				float: left;
+				background:white;
+				border:1px solid #FF6380;
+				border-radius:5px;
+				line-height: 40px; /*设置line-height与父级元素的height相等*/
+            		text-align: center; /*设置文本水平居中*/
+            		overflow: hidden; /*防止内容超出容器或者产生自动换行*/
+            		background-color: #FF6380;
+            		color: white;
+			} 
+			
+		</style>
+	<body >
+		<div id="goodsinfo">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: black;"></a>
+				<h1 class="mui-title">商品</h1>
+			</header>
+			<div class="mui-slider">
+  <div class="mui-slider-group">
+    <!--第一个内容区容器-->
+    <div class="mui-slider-item" v-for="(item,index) in banner">
+     	<a href="#"><img :src="item.url"/></a> 
+    </div>
+    <!--第二个内容区-->
+    <div class="mui-slider-item">
+        
+    </div>
+
+  </div>
+  	<div class="mui-slider-indicator" style="z-index: 1;" >  
+                <div class="mui-indicator mui-active"></div>  
+                <a v-for="(item,index) in banner">
+                	  <div class="mui-indicator"></div>  
+                </a>
+            
+     </div>  
+</div>
+			
+   	<div class="mui-slider-indicator">
+    		<div class="mui-indicator mui-active"></div>
+    		<div class="mui-indicator"></div> 
+	</div>
+
+	<div class="goods">
+		<h1 style="font-size: 25px; text-align: center;padding-top: 20px;">{{name}}</h1>
+		<div class="price">
+			<span class="true_price">¥{{true_price}}</span>
+			<span class="yuan_price">原价:¥{{sell_price}}</span>
+		</div>
+	</div> 
+	<div style="margin-top:10px ; background-color: #efeff4;">
+    <div class="mui-row" >
+        <div class="mui-col-sm-3 mui-col-xs-3">
+            <li class="mui-table-view-cell nolisttype" >
+                <a class="mui-navigate-right">
+                    {{buy_number}}人购买   
+                </a>
+            </li>
+        </div>
+        <div class="mui-col-sm-3 mui-col-xs-3">
+            <li class="mui-table-view-cell nolisttype">
+                <a class="mui-navigate-right">
+                  安全支付
+                </a>
+            </li>
+        </div>
+         <div class="mui-col-sm-3 mui-col-xs-3">
+            <li class="mui-table-view-cell nolisttype">
+                <a class="mui-navigate-right">
+                   隐私包装
+                </a>
+            </li>
+        </div>
+         <div class="mui-col-sm-3 mui-col-xs-3">
+            <li class="mui-table-view-cell nolisttype mui-navigate-right">
+                正品保证
+            </li>
+        </div>
+    </div>
+</div>
+<div class="img_desc" v-for="(item,index) in images">
+	<img :src="item.url">
+</div>
+<div class="option">
+	<span class="buy" @click="buy()">立即购买</span>
+	<span class="shopcat" @click="shopcat()">加入购物车</span>
+</div>
+</div>
+	</div>
+	</body>
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/mui.js"></script>
+		<script type="text/javascript">
+			
+			
+		
+			var dataplayer = new Vue({
+			el:'#goodsinfo',
+			data:{
+				name:'12',
+				true_price:'12',
+				sell_price:'12',
+				buy_number:'',
+				banner:[],
+				images:[]
+			},
+			methods:{
+				buy: function(){ //进入玩家详情页
+					mui.alert('商品缺货')
+//						mui.openWindow({
+//							url:'./html/shop/detail.html',
+//						})
+				},
+				shopcat:function(item){
+					mui.alert('已加入购物车')
+				}
+			}
+			
+		})
+	
+	mui.init();
+			mui("#slider").slider({interval: 3000});
+			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				var gallery = mui('.mui-slider');
+        				gallery.slider({
+  	    				interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+    				});
+    		
+				mui.post('http://aiqinqu.cn/api/goodsinfo',{'id':self.goodsid},function(res){
+					dataplayer.banner = res.get_goods_banner
+					dataplayer.images = res.get_goods_image
+					dataplayer.name = res.name
+					dataplayer.true_price = res.true_price
+					dataplayer.sell_price = res.sell_price
+					dataplayer.buy_number = res.buy_number
+					console.log(dataplayer)
+//			 		convert(res)
+				})
+			})
+
+	</script>
+</html>

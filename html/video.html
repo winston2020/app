@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<!--App自定义的css-->
+		<style type="text/css">
+		html,
+			body {
+				background-color: white;
+			}
+			.item-img{
+				width: 100%;
+				height: 9rem;
+			}
+			.avatar{
+				height: 1.5rem;
+				width: 1.5rem;
+				border-radius: 1.5rem ;
+				margin-left: 10px;
+			}
+			.tougao{
+				margin-left: 10px;
+			}
+			.content{
+				border-right: 3px solid #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">视频</h1>
+		</header>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content">
+			<!--数据列表-->
+
+			<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" id="video" >
+				 	 	<div class="mui-row">
+        						<div class="mui-col-sm-6 mui-col-xs-6 content" v-for="(item,index)  in video">
+            						 <div class="mui-ellipsis  dark-medium">
+            						  	 <img :id="item.id" class="item-img" :src="item.resources_cover_img_url"  @click="open_video_detail(item,index)" >
+								 </div>	
+            						 <div class="mui-ellipsis  dark-medium"> 
+            						 	<span class="mui-pull-left">
+            						 		<img class="avatar" :src="item.avatar"/>
+            						 	</span>
+									<span class="mui-pull-right  dark-medium">{{item.resources_description}}</span>
+								 </div>	
+								 <div class="mui-ellipsis tougao pink-medium">
+								    	<span class="mui-pull-left">{{item.series_price}}趣币</span>
+								    	<span class="mui-pull-right  dark-medium">{{item.name}}投稿</span>
+								 </div> 
+							</div>
+        				</div>
+			  		</ul>
+				</div>
+		</div>
+			<script src="../js/vue.min.js"></script>
+			<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			
+			var videodata = new Vue({ 
+			el:"#video", 
+			data:{
+				video:[],
+				lastvideoid:'',
+			},
+			methods:{
+					open_video_detail: function(item,index){ //进入玩家详情页
+						if(localStorage.getItem('username')==null){
+  				 			mui.openWindow({
+								url:'./login.html', 
+							})
+  				 		}else{
+							buydata = {'price':item.price,'userid':localStorage.getItem('userid'),'resourceid':item.id,'id':item.id}
+							mui.post('http://aiqinqu.cn/api/buy/valvideo',buydata,function(res){
+								data = JSON.parse(res)  
+								if(data.status==200){
+ 									mui.openWindow({ 
+  				 						id:"videoid", 
+										url:'./video/detail.html',
+										extras:{ 
+											url:item.url,
+											description:item.description,
+											cover_img_url:item.cover_img_url
+										}
+									})
+								}else{
+									if(parseInt(localStorage.getItem('coin'))> parseInt(item.price) ||localStorage.getItem('coin') == parseInt(item.price) ){
+  				 							var btnArray = ['取消', '支付'];
+  				 							mui.confirm('消耗'+parseInt(item.price)+'趣币查看,当前'+ parseInt(localStorage.getItem('coin'))+'趣币', '确认支付', btnArray,function(e){ 
+													if(e.index){
+  				 										buyvideo(buydata,item)  
+													}else{
+														return
+													}
+  				 							})
+  				 						}else{
+  				 							var czArray = ['取消', '充值'];
+  				 							mui.confirm('是否充值', '趣币不足', czArray,function(e){ 
+													if(e.index){
+  				 										mui.openWindow({
+															url:'./pay.html',
+														})	
+													} 
+  				 							})
+  				 						} 
+									}
+							})
+  				 		}
+
+					}
+				}
+			})
+			
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			function pullshuju(videoid){
+				mui.post('http://aiqinqu.cn/api/video',{'id':videoid},function(res){
+					res =  JSON.parse(res)
+					videodata.video = res;  
+					videodata.lastvideoid = res[res.length-1].id  
+				}) 
+			}	
+		 
+			pullshuju()
+			var count = 0;
+			function pullupRefresh() { 
+				videoid = videodata.lastvideoid
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 10)); //参数为true代表没有更多数据了。
+					mui.post('http://aiqinqu.cn/api/video',{'id':videoid},function(res){
+							res =  JSON.parse(res)
+							videodata.video.push.apply( videodata.video,res) 
+							videodata.lastvideoid = res[res.length-1].id  
+					})
+				}, 1500);
+			}
+			
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				setTimeout(function() {
+					pullshuju()
+					mui('#pullrefresh').pullRefresh().endPulldown();
+				}, 1500);
+			}
+
+		</script>
+	</body>
+
+</html>

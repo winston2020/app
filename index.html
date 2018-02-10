@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script src="js/mui.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style> 
+			html,
+			body {
+				background-color: white;
+			}
+			.item-img{
+				width: 100%;
+				height: 9rem;
+			}
+			.avatar{
+				height: 1.5rem;
+				width: 1.5rem;
+				border-radius: 1.5rem ;
+				margin-left: 10px;
+			}
+			.tougao{
+				margin-left: 10px;
+			}
+		</style>
+	</head> 
+
+	<body>
+	
+		<div class="mui-content" style="background-color: white;">
+			<header class="mui-bar mui-bar-nav" style="background-color: white;">
+				<h1 class="mui-title">商城</h1> 
+			</header>
+			
+			<div class="mui-scroll-wrapper" style="top: 50px;">
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" id="goods" >
+				 	 	<div class="mui-row">
+        						<div class="mui-col-sm-6 mui-col-xs-6" style="border-right: 3px solid #fff;" v-for="(item,index)  in goods">
+            						 <div class="mui-ellipsis  dark-medium">
+            						  	 <img class="item-img" :src="item.img" :id="index" @click="open_goods_detail(item,index)" >
+								 </div>	
+            						 <div class="mui-ellipsis  dark-medium">
+            						 	<span class="mui-pull-left tougao">
+            						 		{{item.name}}
+            						 	</span>
+									<span class="mui-pull-right  dark-medium">{{item.tag_name}}</span>
+								 </div>	
+								 <div class="mui-ellipsis tougao pink-medium">
+								    		<span class="mui-pull-left">¥{{item.sell_price}}</span>
+								    		<span class="mui-pull-right  dark-medium">销量:{{item.buy_number}}</span>
+								 </div>
+							</div>
+        					</div>
+			  	</ul>
+	   </div>
+</div>
+
+	</div>
+		<script src="js/vue.min.js"></script>
+		<script src="js/util.js"></script>
+		<script type="text/javascript">
+			var datagoods = new Vue({
+			el:'#goods',
+			data:{
+				goods:[]
+			},
+			methods:{
+				open_goods_detail: function(item,index){ //进入玩家详情页
+						mui.openWindow({
+							id:'goodsid', 
+							url:'./html/shop/detail.html',
+							extras:{
+								goodsid:item.id
+							}
+						})
+				},
+				vali_data:function(item){
+						mui(".mui-row").on('tap','.item-img',function(){
+						})
+				}
+				
+			} 
+			
+		})
+	
+		
+		function convert(items){
+
+			var newItem =[]
+			for (i=0;i<items.length;i++) {
+				datagoods.goods.push({
+						id: items[i].id,
+						img: items[i].cover_img_url,
+                        tag_name: items[i].tag_name,
+                        name: items[i].name,
+                        sell_price: items[i].sell_price,
+                        avatar: items[i].avatar,
+                        buy_number: items[i].buy_number
+				})
+			}
+
+		}
+		function refreshData () { 
+				mui.post('http://aiqinqu.cn/api/shop',{},function(res){
+					res = JSON.parse(res)
+			 		convert(res)
+				})
+			}
+		mui('.mui-scroll-wrapper').scroll({});
+		
+		mui.init({
+			swipeBack: true,
+  			pullRefresh : {
+    				container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+    				down: {
+      				auto: false,//可选,默认false.首次加载自动下拉刷新一次
+      				callback:refreshData() //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+    				},
+    				up: {
+      				height:50,//可选.默认50.触发上拉加载拖动距离
+      				auto:true,//可选,默认false.自动上拉加载一次
+      				contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+      				contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+      				callback:refreshData() //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+    					}
+  				}
+			});
+			
+			
+			
+			(function() {
+				mui.init({
+					swipeBack: true //启用右滑关闭功能
+				});
+				mui.plusReady(function() {
+					var self = plus.webview.currentWebview(),
+						leftPos = Math.ceil((window.innerWidth - 60) / 2); // 设置凸起大图标为水平居中
+						
+					// 创建子webview窗口 并初始化
+					var aniShow = {};
+					util.initSubpage(aniShow);
+					
+					var 	nview = plus.nativeObj.View.getViewById('tabBar'),
+						activePage = plus.webview.currentWebview(),
+						targetPage,
+						subpages = util.options.subpages,
+						pageW = window.innerWidth,
+						currIndex = 0;
+			
+					/**
+					 * 根据判断view控件点击位置判断切换的tab
+					 */
+					nview.addEventListener('click', function(e) {
+						var clientX = e.clientX;
+						if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
+							currIndex = 0;
+						} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.45)) {
+							currIndex = 1;
+						} else if(clientX > parseInt(pageW * 0.45) && clientX <= parseInt(pageW * 0.8)) {
+							currIndex = 2;
+						} else {
+							currIndex = 3;
+    	 					username = JSON.parse(sessionStorage.getItem('username')) 
+    	 					
+   							if(username == null){ 	
+   								mui.openWindow({ 
+									url:'/html/login.html',   
+								})	
+							}else{
+								mui.openWindow({ 
+									url:'/html/user.html',    
+								})	
+							}
+						} 
+						// 匹配对应tab窗口	
+						if(currIndex > 0) {
+							targetPage = plus.webview.getWebviewById(subpages[currIndex - 0]);
+						} else {
+							targetPage = plus.webview.currentWebview();
+						}
+
+						if(targetPage == activePage) {
+							return;
+						}
+
+						if(currIndex !== 4) { 
+							//底部选项卡切换
+							util.toggleNview(currIndex);
+							// 子页面切换
+							util.changeSubpage(targetPage, activePage, aniShow);
+							//更新当前活跃的页面
+							activePage = targetPage;
+						} else {
+							//第四个tab 打开新窗口
+							plus.webview.open('html/new-webview.html', 'new', {}, 'slide-in-right', 200);
+						}
+					});
+				});
+			})();
+		</script>
+	</body>
+
+</html>

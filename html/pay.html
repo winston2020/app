@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+</head>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+<meta content="telephone=no, address=no" name="format-detection">
+<!-- 忽略将数字变为电话号码 -->
+
+<link href="../css/mui.min.css" rel="stylesheet" />
+<link href="../css/common.css" rel="stylesheet" />
+<link href="../css/pay.css" rel="stylesheet" />
+
+<body>
+
+	<header class="mui-action-back mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">充值中心</h1>
+	</header>
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="padding-bottom: 50px;padding-top:60px;">
+		<div class="mui-scroll">
+			<!--数据列表-->
+			<ul class="mui-table-view mui-table-view-chevron" id="pay">
+				<div class="rechargeList" :data-price='item.price' v-for='(item,index) in rechargeList'>
+					<div class="rechargeListLeft" v-text='item.rechargeTitle'>
+						
+					</div>
+					<div class="rechargeListMid" v-text='item.rechargePrice'>
+						
+					</div>
+					<div class="rechargeListRight">
+						<span class="radio mui-icon mui-icon-checkmarkempty" v-if='item.status==1'></span>
+						<span class="radio" v-if='item.status==0'></span>
+					</div>
+				</div>
+				<div class="sureButton"  id='sureButton'>确认充值</div>
+			</ul>
+		</div>
+	</div>
+	<!--底部菜单栏-->
+
+	<div  class="rechargeZhezhao">
+		<div class="rechargeRect">
+			<div style="color: #00aaee;">支付宝</div>
+			<div style="color: #348903;">微信</div>
+			<div class="close">取消</div>
+		</div>
+	</div>
+</body>
+<script src="../js/jquery-3.1.0.min.js"></script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/vue.min.js"></script>
+<script src="../js/countUp.min.js"></script>
+<script src="../js/com_js.js"></script>
+<script type="text/javascript">
+	$(".close").on("tap",function(){
+		$(".rechargeZhezhao").hide()
+	})
+	mui.init({
+		pullRefresh: {
+			container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+			down: {
+				height: 50, //可选,默认50.触发下拉刷新拖动距离,
+				auto: true, //可选,默认false.自动下拉刷新一次
+				contentdown: "", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+				contentover: "", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+				contentrefresh: "", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+				callback: pullfresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			}
+		}
+	});
+
+	function pullfresh() {
+		mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+	}
+
+	var body = new Vue({
+	el:"#pay",
+	data:{
+		rechargeList:[
+			{
+				rechargeTitle:"10趣币",
+				rechargePrice:"￥10",
+				status:"1",
+				price:"10"
+			},
+			{
+				rechargeTitle:"30趣币",
+				rechargePrice:"￥28",
+				status:"0",
+				price:"28"
+			},
+			{
+				rechargeTitle:"100趣币",
+				rechargePrice:"￥80",
+				status:"0",
+				price:"80"
+			},
+			{
+				rechargeTitle:"40趣币",
+				rechargePrice:"￥230",
+				status:"0",
+				price:"230"
+			},
+		],
+		price:"10"
+	}
+})
+
+
+$("body").on("tap",".rechargeList",function(){
+	 var index = $(this).index();
+	 var price = $(this).attr("data-price");
+     body.price = price;
+     for(var i = 0 ; i < body.rechargeList.length ; i++){
+     	 if(index==i){
+     	 	body.rechargeList[i].status=1
+     	 }else{
+     	 	body.rechargeList[i].status=0
+     	 }
+     }
+})
+
+
+$("#sureButton").on("tap",function(){
+$(".rechargeZhezhao").show()	
+})
+</script>
+
+</html>

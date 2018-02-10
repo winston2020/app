@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+		<meta content="telephone=no, address=no" name="format-detection">	
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<style>
+			.login-btn{
+				font-size: 18px;
+   				 display: block;
+    				width: 100%;
+    				margin-bottom: 10px;
+    				padding: 10px 0;
+    				background-color: #FF6380;
+    				color: white;
+			}
+			.logininput{
+				 	height: 10px;
+    					padding: 10px 0px;
+    					font-size: 12px;
+			}
+			.link-area {
+				display: block;
+				margin-top: 25px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body class="white-bg">
+		<header class="mui-bar mui-bar-nav white-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #333;"></a>
+			<h1 class="mui-title">登录</h1>
+		</header>
+		
+		<div class="mui-content white-bg" style="padding-top: 80px;" id="login">
+			<form id='login_from' class="mui-input-group">
+				<div class="mui-input-row" style="height: 45px;">
+					<label>账号</label>
+					<input name='name' type="text" class="mui-input-clear mui-input logininput" placeholder="请输入账号">
+				</div>
+				<div class="mui-input-row" style="height: 45px;">
+					<label>密码</label>
+					<input name='password' type="password" class="mui-input-clear mui-input logininput" placeholder="请输入密码">
+				</div>
+			</form>
+			
+			<div class="mui-content-padded">
+				<button id='login' class="mui-btn login-btn " @click="login()" >登录</button>
+				<div class="link-area "><a id='reg' class="pink-big" @click="register()">注册账号</a> 
+				</div>
+			</div>
+			<div class="mui-content-padded oauth-area">
+
+			</div>
+		</div>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/jquery-3.1.0.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		if(localStorage.getItem('userdata')){
+			mui.openWindow({
+				url:'../index.html'
+			})
+		}
+		var dataplayer = new Vue({
+			el:'#login',
+			data:{
+				player:[]
+			},
+			methods:{
+				register:function(){
+					mui.openWindow({
+						url:'./register.html'
+					})
+				},
+				login:function(){
+					data = $("#login_from").serializeObject();
+					
+						mui.post('http://aiqinqu.cn/api/login',data,function(res){
+							data = JSON.parse(res)
+                        
+								if(data.status_code==200){
+									localStorage.setItem('username', data.data.name);
+									localStorage.setItem('avatar', data.data.avatar);
+									localStorage.setItem('coin', data.data.coin);
+									localStorage.setItem('userid', data.data.id);
+									localStorage.setItem('active', data.data.active);
+									if (localStorage.getItem('username')) {
+										mui.back()
+									}
+								}else{
+									mui.toast(data.msg)
+								}
+						})
+				}
+			}
+		});
+		</script>
+	</body>
+</html>
