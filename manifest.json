@@ -375,10 +375,7 @@
 				},
 				"android": {
 					"mdpi": "", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "C:/Users/Administrator/Pictures/Camera Roll/480.png", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "C:/Users/Administrator/Pictures/Camera Roll/720.png", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": "C:/Users/Administrator/Pictures/Camera Roll/1080.png"
+					"ldpi": ""
 				}
 			}
 		},"ads":{"rp":false,"splash":false,"push":false,"spot":false},"adid":""
@@ -476,7 +473,8 @@
 			"html/video.html": {
 				"resources": [],
 				"refer": [
-					"html/login.html"
+					"html/login.html",
+					"html/pay.html"
 				],
 				"priority": 0
 			}

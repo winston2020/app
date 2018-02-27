@@ -14,10 +14,11 @@
 	<header class="mui-bar mui-bar-nav" style="background-color: white;">
 			<h1 class="mui-title">个人中心</h1> 
 	</header>
-	<div  class="mui-content mui-scroll-wrapper" >
-		<div class="mui-scroll" >
-			<!--数据列表-->
-			<ul class="mui-table-view mui-table-view-chevron" id="user"  style="padding-bottom: 50px;">
+	    <div id="pullrefresh" class="mui-content">
+            <!--数据列表-->
+
+            <div class="mui-scroll">
+                  <ul class="mui-table-view mui-table-view-chevron" id="user"  style="padding-bottom: 50px;">
 				<div class="top" >
 					<div class="userImg">
 
@@ -65,32 +66,20 @@
 						</ul>
 					</div>
 				</div>
-			</ul>
-		</div>
-	</div>
-	
-
-</body>
-<script src="../js/jquery-3.1.0.min.js"></script> 
-<script src="../js/mui.min.js"></script>
-<script src="../js/vue.min.js"></script> 
-<script src="../js/countUp.min.js"></script>
-
-
-<script type="text/javascript">
-		
-	mui.plusReady(function(){
-    	let username = localStorage.getItem('username') 
-		let coin = localStorage.getItem('coin')
-		let avatar = localStorage.getItem('avatar')
-		
-		var dataplayer = new Vue({
+				</ul>
+            </div>
+        </div>
+            <script src="../js/vue.min.js"></script>
+            <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+        <script>
+            
+         var dataplayer = new Vue({
 		el:'#user',
 		data:{ 
-			price:coin,
+			price:'',
 			jifen:0,
-          	avatar:avatar, 
-			name:username  
+          	avatar:'', 
+			name:''   
 		},
 		methods:{
 			pay:function(){
@@ -116,30 +105,21 @@
 			}
 		}
 	})
-	});	
+            
+     
+			
+		window.addEventListener('pageflowrefresh', function() {
+					dataplayer.price = localStorage.getItem('coin'),
+					dataplayer.jifen=0,
+          			dataplayer.avatar=localStorage.getItem('avatar'), 
+					dataplayer.name=localStorage.getItem('username')  	
+}, false);
+window.addEventListener('backinfo', function() {
+
+		plus.webview.currentWebview().close();	
+}, false);
 	
-	
-	
-	mui.init({
-		pullRefresh: {
-			container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
-			down: {
-				height: 50, //可选,默认50.触发下拉刷新拖动距离,
-				auto: true, //可选,默认false.自动下拉刷新一次
-				contentdown: "", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
-				contentover: "", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
-				contentrefresh: "", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
-				callback: pullfresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
-			}
-		}
-	});
-
-	function pullfresh() {
-		mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
-	}
-
-
-
-</script>
+        </script>
+    </body>
 
 </html>

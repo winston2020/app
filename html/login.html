@@ -60,12 +60,10 @@
 	<script src="../js/vue.min.js"></script>
 	<script src="../js/jquery-3.1.0.min.js"></script>
 	<script src="../js/common.js"></script>
+		<script src="../js/util.js"></script>
+	
 	<script>
-		if(localStorage.getItem('userdata')){
-			mui.openWindow({
-				url:'../index.html'
-			})
-		}
+		
 		var dataplayer = new Vue({
 			el:'#login',
 			data:{
@@ -79,10 +77,8 @@
 				},
 				login:function(){
 					data = $("#login_from").serializeObject();
-					
 						mui.post('http://aiqinqu.cn/api/login',data,function(res){
 							data = JSON.parse(res)
-                        
 								if(data.status_code==200){
 									localStorage.setItem('username', data.data.name);
 									localStorage.setItem('avatar', data.data.avatar);
@@ -90,7 +86,11 @@
 									localStorage.setItem('userid', data.data.id);
 									localStorage.setItem('active', data.data.active);
 									if (localStorage.getItem('username')) {
-										mui.back()
+										
+										a = plus.webview.getWebviewById('html/user.html');
+										mui.fire(a, "pageflowrefresh" );//出发A页面的pageflowrefresh方法
+									 	mui.back()
+										
 									}
 								}else{
 									mui.toast(data.msg)
@@ -99,6 +99,11 @@
 				}
 			}
 		});
+		
+		mui.plusReady(function(){
+     console.log("当前页面URL："+plus.webview.currentWebview().getURL());
+		});
+
 		</script>
 	</body>
 </html>
