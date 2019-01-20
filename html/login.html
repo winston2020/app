@@ -86,11 +86,9 @@
 									localStorage.setItem('userid', data.data.id);
 									localStorage.setItem('active', data.data.active);
 									if (localStorage.getItem('username')) {
-										
-										a = plus.webview.getWebviewById('html/user.html');
-										mui.fire(a, "pageflowrefresh" );//出发A页面的pageflowrefresh方法
+										user = plus.webview.getWebviewById('html/user.html');
+										mui.fire(user, "updateuserinfo" );//出发A页面的pageflowrefresh方法
 									 	mui.back()
-										
 									}
 								}else{
 									mui.toast(data.msg)
@@ -100,10 +98,12 @@
 			}
 		});
 		
-		mui.plusReady(function(){
-     console.log("当前页面URL："+plus.webview.currentWebview().getURL());
-		});
-
+		 
+		window.addEventListener('close', function() {
+			plus.webview.currentWebview().close();	
+		}, false);
+		
+		
 		</script>
 	</body>
 </html>

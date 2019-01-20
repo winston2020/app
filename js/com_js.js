@@ -138,24 +138,7 @@ var loading = "<div class='kdm_loading'><div id='loading'><div class='spinner'><
     "</div>" +
     "</div>" +
     "</div>"
-//页面等待加载
-var pageloading = "<div class='loadings kdm_loadings'><div id = 'cupcake' class = 'box'>" +
-    "<span class = 'letter'>K</span>" +
-    "<div class = 'cupcakeCircle box'>" +
-    "<div class = 'cupcakeInner box'>" +
-    "<div class = 'cupcakeCore box'></div>" +
-    "</div></div>" +
-    "<span class = 'letter box'>u</span>" +
-    "<span class = 'letter box'>D</span>" +
-    "<span class = 'letter box'>a</span>" +
-    "<span class = 'letter box'>i</span>" +
-    "<span class = 'letter box'>M</span>" +
-    "<span class = 'letter box'>i</span>" +
-    "<span class = 'letter box'>a</span>" +
-    "<span class = 'letter box'>o</span>" +
-    "<div style='text-align: center;margin-top: 70px;color: #ff8286;letter-spacing: 3px;clear:both;font-size:13px'>口袋喵，只为更美的你</div>" +
-    "</div></div>"
-//用户登录
+
 var login = "<div class='l_zhezhaologin'>" +
     "   <form action='' id='l_loginrect'>" +
     "   <!--<div class='l_logo'>-->" +

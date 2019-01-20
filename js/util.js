@@ -2,7 +2,7 @@ var util = {
 	options: {
 		ACTIVE_COLOR: "#FF6380",
 		NORMAL_COLOR: "#929292",
-		subpages: ["../index.html","html/player.html", "html/video.html","html/user.html","html/login.html"]
+		subpages: ["html/comic.html","html/player.html", "html/video.html","html/user.html","html/login.html"]
 	},
 	/**
 	 *  简单封装了绘制原生view控件的方法
@@ -34,7 +34,7 @@ var util = {
 			}
 			
 		}
-
+		
 		// 初始化第一个tab项为首次显示
 		temp[self.id] = "true";
 		mui.extend(aniShow, temp);
@@ -101,7 +101,6 @@ var util = {
 			nviewEvent = plus.nativeObj.View.getViewById("tabBar"), // 获取nview控件对象
 			nviewObj = self.getStyle().subNViews[0], // 获取nview对象的属性
 			currTag = nviewObj.tags[currIndex]; // 获取当前需重绘的tag
-
-		nviewEvent.drawText(currTag.text, currTag.position, util.changeColor(currTag.textStyles, color), currTag.id);
+			nviewEvent.drawText(currTag.text, currTag.position, util.changeColor(currTag.textStyles, color), currTag.id);
 	}
 };

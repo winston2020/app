@@ -8,9 +8,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
 <meta content="telephone=no, address=no" name="format-detection">
 
-<link href="../css/mui.min.css" rel="stylesheet" />
-<link href="../css/common.css" rel="stylesheet" />
-<link href="../css/myvideo.css" rel="stylesheet" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/common.css" rel="stylesheet" />
+<link href="../../css/myvideo.css" rel="stylesheet" />
 <body>
 	<header class="mui-bar mui-bar-nav">
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -19,8 +19,8 @@
 	<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="padding-bottom: 50px;padding-top:60px;">
 		<div class="mui-scroll">
 			<!--数据列表-->
-			<ul class="mui-table-view mui-table-view-chevron">
-				<div class="top" id="myvideo">
+			<ul class="mui-table-view mui-table-view-chevron" id="myvideo">
+				<div class="top" >
 					<div class="userImg">
 						<img :src="avatar">
 					</div>
@@ -37,36 +37,21 @@
 							<div>积分</div>
 						</div>
 					</div>
+
+
 				</div>
 				<!--我的图片-->
-				<div class="mypicture">
-					<div class="mypictureList">	
-					   <img src="http://static.koudaimiao.com/1506412006626.png" alt="" />
-					</div>
-					<div class="mypictureList">	
-					   <img src="http://static.koudaimiao.com/1506412006626.png" alt="" />
-					</div>
-					<div class="mypictureList">	
-					   <img src="http://static.koudaimiao.com/1506412006626.png" alt="" />
-					</div>
-					<div class="mypictureList">	
-					   <img src="http://static.koudaimiao.com/1506412006626.png" alt="" />
-					</div>
-					<div class="mypictureList">	
-					   <img src="http://static.koudaimiao.com/1506412006626.png" alt="" />
-					</div>
-				</div>
+			
 				
+				<div class="myvideo"  v-for="(item,index) in resources">
+
+					<video width="100%" height="" :poster="item.cover_img_url" controls preload="none">
+					<source :src="item.url" type="video/mp4"></source>	
+				</video> 
+
+		</div> 
 				<!--我的视频 -->
-				<div class="myvideo">
-					<div class="myvideoList">
-						<video width="100%" height="" controls preload="none" poster="http://vjs.zencdn.net/v/oceans.png">
-							<source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source>
-							<source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/ogg"></source>
-							<source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/webm"></source>
-						</video>
-					</div> 
-				</div>
+				
 			</ul>
 		</div>
 	</div>
@@ -80,11 +65,11 @@
 		</div>
 	</div>
 </body>
-<script src="../js/jquery-3.1.0.min.js"></script>
-<script src="../js/mui.min.js"></script>
-<script src="../js/vue.min.js"></script>
-<script src="../js/countUp.min.js"></script>
-<script src="../js/common.js"></script>
+<script src="../../js/jquery-3.1.0.min.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/countUp.min.js"></script>
+<script src="../../js/common.js"></script>
 <script type="text/javascript">
 	$(".close").on("tap",function(){
 		$(".rechargeZhezhao").hide()
@@ -102,20 +87,29 @@
 			}
 		}
 	});
+	
+	mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				myvideo.price =self.price
+				myvideo.avatar =self.avatar
+				myvideo.name =self.name
+				getresources(localStorage.getItem('userid'))
+
+	});
 
 	function pullfresh() {
 		mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
 	}
 
-var userdata = JSON.parse(localStorage.getItem('userdata'))
-var body = new Vue({
+var myvideo = new Vue({
 	el:"#myvideo",
 	data:{
-			price:userdata.coin,
+			price:'',
 			jifen:0,
-			avatar:userdata.avatar,
-			name:userdata.name,
-		rechargeList:[
+			avatar:'',
+			name:'',
+			resources:[],
+			rechargeList:[
 			{
 				rechargeTitle:"10趣币",
 				rechargePrice:"￥10",
@@ -163,6 +157,15 @@ $("body").on("tap",".rechargeList",function(){
 $("#sureButton").on("tap",function(){
 $(".rechargeZhezhao").show()	
 })
+
+function getresources(userid){
+	mui.post('http://aiqinqu.cn/api/userresources',{id:userid},function(res){
+					myvideo.resources = res
+					console.log(res)
+			})
+}
+
+ 
 </script>
 
 </html>

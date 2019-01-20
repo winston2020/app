@@ -11,7 +11,7 @@
 <link href="../css/common.css" rel="stylesheet" />
 <link href="../css/style.css" rel="stylesheet" />
 <body>
-	<header class="mui-bar mui-bar-nav" style="background-color: white;">
+	<header class="mui-bar mui-bar-nav white-bg" > 
 			<h1 class="mui-title">个人中心</h1> 
 	</header>
 	    <div id="pullrefresh" class="mui-content">
@@ -73,7 +73,7 @@
             <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
         <script>
             
-         var dataplayer = new Vue({
+        var dataplayer = new Vue({
 		el:'#user',
 		data:{ 
 			price:'',
@@ -84,42 +84,43 @@
 		methods:{
 			pay:function(){
 				mui.openWindow({
-//					url:'./pay.html'
-					url:'https://www.youyunnet.com/pay/?pid=2931935146&data=18384105359&money=1.00&url=/demo.html'
+					url:'/html/user/pay.html' 
 				})
 			},
 			order:function(){
 				mui.openWindow({
-					url:'./order.html'
+					url:'/html/user/order.html'
 				})
 			},
 			myvideo:function(){
 				mui.openWindow({
-					url:'./myvideo.html'
+					url:'/html/user/myvideo.html',
+					extras:{			
+						price :localStorage.getItem('coin'),
+						jifen : 0,
+      					avatar : localStorage.getItem('avatar'), 
+						username : localStorage.getItem('username')  		
+					}
 				})
 			},
 			setup:function(){
 				mui.openWindow({
-					url:'./setup.html'
+					url:'/html/user/setup.html'
 				})
 			}
 		}
 	})
-            
-     
-			
-		window.addEventListener('pageflowrefresh', function() {
-					dataplayer.price = localStorage.getItem('coin'),
-					dataplayer.jifen=0,
-          			dataplayer.avatar=localStorage.getItem('avatar'), 
-					dataplayer.name=localStorage.getItem('username')  	
-}, false);
-window.addEventListener('backinfo', function() {
-
-		plus.webview.currentWebview().close();	
-}, false);
+        	
+	window.addEventListener('updateuserinfo', function() {
+			dataplayer.price = localStorage.getItem('coin'),
+			dataplayer.jifen=0,
+      		dataplayer.avatar=localStorage.getItem('avatar'), 
+			dataplayer.name=localStorage.getItem('username')  	
+	}, false);
+	window.addEventListener('backinfo', function() {
+			plus.webview.currentWebview().close();	
+	}, false);
 	
         </script>
-    </body>
-
+   </body>
 </html>

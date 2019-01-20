@@ -378,7 +378,7 @@
 					"ldpi": ""
 				}
 			}
-		},"ads":{"rp":false,"splash":false,"push":false,"spot":false},"adid":""
+		},"ads":{"rp":false,"splash":false,"push":false,"spot":false},"adid":"120689200901"
 	},
 	"dependencies": {
 		"pages": {
@@ -400,7 +400,8 @@
 					"html/video.html",
 					"html/user.html",
 					"html/login.html",
-					"html/shop/detail.html"
+					"html/shop/detail.html",
+					"html/comic.html"
 				],
 				"priority": 0
 			},
@@ -475,6 +476,13 @@
 				"refer": [
 					"html/login.html",
 					"html/pay.html"
+				],
+				"priority": 0
+			},
+			"html/comic.html": {
+				"resources": [],
+				"refer": [
+					"html/shop/detail.html"
 				],
 				"priority": 0
 			}

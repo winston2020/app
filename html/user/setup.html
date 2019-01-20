@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
 <meta content="telephone=no, address=no" name="format-detection">
 <!-- 忽略将数字变为电话号码 -->
-<link href="../css/mui.min.css" rel="stylesheet" />
-<link href="../css/common.css" rel="stylesheet" />
-<link href="../css/style.css" rel="stylesheet" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/common.css" rel="stylesheet" />
+<link href="../../css/style.css" rel="stylesheet" />
 <body>
 <header class="mui-bar mui-bar-nav">
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: black;"></a>
@@ -49,9 +49,9 @@
 	
 
 </body>
-<script src="../js/vue.min.js"></script>
-<script src="../js/jquery-3.1.0.min.js"></script> 
-<script src="../js/mui.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/jquery-3.1.0.min.js"></script> 
+<script src="../../js/mui.min.js"></script>
 		<script src="../js/util.js"></script>
 <script type="text/javascript">
 	var body = new Vue({
@@ -63,9 +63,9 @@
 				},
 				goout:function(){ 
 					localStorage.clear()
-
    					plus.runtime.restart();
-
+   					index = plus.webview.getWebviewById('../index.html'); //去除web白屏
+					mui.fire(index, "closewhiteweb" );//出发A页面的pageflowrefresh方法
 				},
 				updatepassword:function(){
 					
@@ -76,11 +76,8 @@
 					})
 				}
 			}
-	})
-	
+		})
 
-
-	
 	mui.init({
 		pullRefresh: {
 			container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等

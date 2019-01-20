@@ -89,10 +89,11 @@
 									localStorage.setItem('coin', data.data.coin);
 									localStorage.setItem('userid', data.data.id);
 									localStorage.setItem('active', data.data.active);
-									plus.webview.getWebviewById('html/user.html');
-									mui.fire(a, "pageflowrefresh" );//出发A页面的pageflowrefresh方法
+									user = plus.webview.getWebviewById('html/user.html');
+									mui.fire(user, "pageflowrefresh" );//出发A页面的pageflowrefresh方法
 									plus.webview.currentWebview().close();
-									plus.webview.currentWebview().opener().close();
+									login = plus.webview.currentWebview().opener();
+									mui.fire(login, "close");
 								}else{
 									mui.toast(data.msg)
 								}

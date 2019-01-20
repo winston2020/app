@@ -37,7 +37,7 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav">
+		<header class="mui-bar mui-bar-nav white-bg">
 			<h1 id="title" class="mui-title">玩家</h1>
 		</header>
 		<!--下拉刷新容器-->
@@ -68,12 +68,12 @@
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			
 			var dataplayer = new Vue({
 			el:'#player',
 			data:{
 				player:[],
-				lastseriesid:''
+				count:'',
+				lastseriesid:'',
 			},
 			methods:{
 				open_player_detail: function(item,index){ //进入玩家详情页
@@ -99,7 +99,7 @@
   				 							var btnArray = ['取消', '支付']; 
   				 							mui.confirm('消耗'+parseInt(item.series_price)+'趣币查看,当前'+ parseInt(localStorage.getItem('coin'))+'趣币', '确认支付', btnArray,function(e){ 
 													if(e.index){
-  				 										buy(buydata,item) 
+  				 										buyseries(buydata,item) 
 													}
   				 							})
   				 						}else {
@@ -141,21 +141,23 @@
 			
 			function refreshData (videoid) {
 				mui.post('http://aiqinqu.cn/api/player',{'id':videoid},function(res){
-			 		dataplayer.player = res 
-					dataplayer.lastseriesid = res[res.length-1].id  
-				})
+					dataplayer.lastseriesid = res[res.length-2].series_id  
+					dataplayer.count = res[res.length-1].allcount 
+					res.pop()
+					dataplayer.player = res 
+				}) 
 			}
 	
-		 
 			refreshData()
 			var count = 0;
 			function pullupRefresh() { 
-				videoid = dataplayer.lastseriesid
-				setTimeout(function() {
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 10)); //参数为true代表没有更多数据了。
-					mui.post('http://aiqinqu.cn/api/player',{'id':videoid},function(res){
-							dataplayer.player.push.apply( dataplayer.player,res) 
-							dataplayer.lastseriesid = res[res.length-1].id  
+				seriesid = dataplayer.lastseriesid
+				setTimeout(function() { 
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > parseInt(dataplayer.count/6))); //参数为true代表没有更多数据了。
+					mui.post('http://aiqinqu.cn/api/player',{'id':seriesid},function(res){
+							dataplayer.lastseriesid = res[res.length-2].series_id 
+							res.pop()
+							dataplayer.player.push.apply(dataplayer.player,res) 
 					})
 				}, 1500);
 			}
@@ -170,6 +172,22 @@
 				}, 1500);
 			}
 
+			function buyseries(buydata,item){
+				mui.post('http://aiqinqu.cn/api/buy/series',buydata,function(res){
+						res =  JSON.parse(res)
+					if(res.status==200){
+						mui.openWindow({ 
+  				 						id:"userid", 
+										url:'./player/detail.html',
+										extras:{ 
+											playerid:item.id  
+										}
+								})
+					}else{
+						mui.alert('支付失败')
+					}
+				}) 
+			} 
 		</script>
 	</body>
 

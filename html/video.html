@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
-		<title>Hello MUI</title>
+		<title></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link href="../css/style.css" rel="stylesheet" />
 		<!--App自定义的css-->
@@ -36,7 +34,7 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav">
+		<header class="mui-bar mui-bar-nav white-bg">
 			<h1 id="title" class="mui-title">视频</h1>
 		</header>
 		<!--下拉刷新容器-->
@@ -74,6 +72,7 @@
 			data:{
 				video:[],
 				lastvideoid:'',
+				count:""
 			},
 			methods:{
 					open_video_detail: function(item,index){ //进入玩家详情页
@@ -82,23 +81,24 @@
 								url:'./login.html', 
 							})
   				 		}else{
-							buydata = {'price':item.price,'userid':localStorage.getItem('userid'),'resourceid':item.id,'id':item.id}
+							buydata = {'price':item.video_price,'userid':localStorage.getItem('userid'),'resourceid':item.resources_id,'id':item.resources_id}
 							mui.post('http://aiqinqu.cn/api/buy/valvideo',buydata,function(res){
 								data = JSON.parse(res)  
+
 								if(data.status==200){
  									mui.openWindow({ 
   				 						id:"videoid", 
 										url:'./video/detail.html',
 										extras:{ 
-											url:item.url,
+											url:item.resources_url,
 											description:item.description,
-											cover_img_url:item.cover_img_url
+											cover_img_url:item.resources_cover_img_url
 										}
 									})
 								}else{
-									if(parseInt(localStorage.getItem('coin'))> parseInt(item.price) ||localStorage.getItem('coin') == parseInt(item.price) ){
+									if(parseInt(localStorage.getItem('coin'))> parseInt(item.video_price) ||parseInt(localStorage.getItem('coin')) == parseInt(item.video_price) ){
   				 							var btnArray = ['取消', '支付'];
-  				 							mui.confirm('消耗'+parseInt(item.price)+'趣币查看,当前'+ parseInt(localStorage.getItem('coin'))+'趣币', '确认支付', btnArray,function(e){ 
+  				 							mui.confirm('消耗'+parseInt(item.video_price)+'趣币查看,当前'+ parseInt(localStorage.getItem('coin'))+'趣币', '确认支付', btnArray,function(e){ 
 													if(e.index){
   				 										buyvideo(buydata,item)  
 													}else{
@@ -106,6 +106,7 @@
 													}
   				 							})
   				 						}else{
+
   				 							var czArray = ['取消', '充值'];
   				 							mui.confirm('是否充值', '趣币不足', czArray,function(e){ 
 													if(e.index){
@@ -140,9 +141,10 @@
 			
 			function pullshuju(videoid){
 				mui.post('http://aiqinqu.cn/api/video',{'id':videoid},function(res){
-					res =  JSON.parse(res)
+					videodata.lastvideoid = res[res.length-2].resources_id 
+					videodata.count = res[res.length-1].allcount 
+					res.pop() 
 					videodata.video = res;  
-					videodata.lastvideoid = res[res.length-1].id  
 				}) 
 			}	
 		 
@@ -150,12 +152,14 @@
 			var count = 0;
 			function pullupRefresh() { 
 				videoid = videodata.lastvideoid
+
 				setTimeout(function() {
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 10)); //参数为true代表没有更多数据了。
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > parseInt(videodata.count/6))); //参数为true代表没有更多数据了。
 					mui.post('http://aiqinqu.cn/api/video',{'id':videoid},function(res){
-							res =  JSON.parse(res)
-							videodata.video.push.apply( videodata.video,res) 
-							videodata.lastvideoid = res[res.length-1].id  
+							videodata.lastvideoid = res[res.length-2].resources_id
+							res.pop()
+							videodata.nextdata = res
+							videodata.video.push.apply(videodata.video,res)   
 					})
 				}, 1500);
 			}
@@ -169,7 +173,27 @@
 					mui('#pullrefresh').pullRefresh().endPulldown();
 				}, 1500);
 			}
-
+			
+			function buyvideo(buydata,item){
+				mui.post('http://aiqinqu.cn/api/buy/video',buydata,function(res){
+					res =  JSON.parse(res)
+					if(res.status==200){
+						mui.openWindow({  
+  				 			id:"videoid", 
+							url:'./video/detail.html',
+							extras:{ 
+								url:item.url,
+								description:item.description,
+								cover_img_url:item.cover_img_url
+							}
+						})
+					}else{
+						mui.alert('支付失败')
+					}
+				})
+			}
+			
+		
 		</script>
 	</body>
 

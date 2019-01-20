@@ -22,7 +22,8 @@
       "html/shop.html",
       "html/player.html",
       "html/login.html",
-      "html/shop/detail.html"
+      "html/shop/detail.html",
+      "html/comic.html"
     ]
   },
   "launch.html": {
@@ -82,12 +83,19 @@
     "refer": [
       "html/login.html",
       "html/player/detail.html"
-    ]
+    ],
+    "resources": []
   },
   "html/video.html": {
     "refer": [
       "html/login.html",
       "html/pay.html"
+    ],
+    "resources": []
+  },
+  "html/comic.html": {
+    "refer": [
+      "html/shop/detail.html"
     ]
   }
 }
